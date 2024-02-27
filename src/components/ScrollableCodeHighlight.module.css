@@ -1,0 +1,5 @@
+.container {
+  [data-scrollbars] {
+    max-height: 300px;
+  }
+}

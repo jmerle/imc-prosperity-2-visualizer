@@ -1,0 +1,119 @@
+{
+  "name": "imc-prosperity-2-visualizer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "pnpm run \"/^lint:.*/\"",
+    "lint:eslint": "eslint --format codeframe '**/*.ts' '**/*.tsx'",
+    "lint:prettier": "prettier --check '**/*.{ts,tsx,cjs,css,html,json,yml}'",
+    "fix": "pnpm run --sequential \"/^fix:.*/\"",
+    "fix:eslint": "pnpm lint:eslint --fix",
+    "fix:prettier": "prettier --write '**/*.{ts,tsx,cjs,css,html,json,yml}'"
+  },
+  "dependencies": {
+    "@mantine/code-highlight": "^7.6.1",
+    "@mantine/core": "^7.6.1",
+    "@mantine/dropzone": "^7.6.1",
+    "@mantine/hooks": "^7.6.1",
+    "@tabler/icons": "^2.47.0",
+    "@tabler/icons-react": "^2.47.0",
+    "axios": "^1.6.7",
+    "date-fns": "^3.3.1",
+    "highcharts": "^11.3.0",
+    "highcharts-react-official": "^3.2.1",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.1",
+    "zustand": "^4.5.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.202",
+    "@types/react": "^18.2.60",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-formatter-codeframe": "^7.32.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.33.2",
+    "postcss": "^8.4.35",
+    "postcss-preset-mantine": "^1.13.0",
+    "postcss-simple-vars": "^7.0.1",
+    "prettier": "^3.2.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:react/recommended",
+      "plugin:react/jsx-runtime",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript",
+      "prettier"
+    ],
+    "plugins": [
+      "@typescript-eslint",
+      "import"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/explicit-member-accessibility": "error",
+      "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/no-var-requires": "off",
+      "@typescript-eslint/explicit-function-return-type": [
+        "error",
+        {
+          "allowExpressions": true
+        }
+      ],
+      "@typescript-eslint/explicit-module-boundary-types": [
+        "error",
+        {
+          "allowArgumentsExplicitlyTypedAsAny": true
+        }
+      ],
+      "import/order": [
+        "error",
+        {
+          "alphabetize": {
+            "order": "asc",
+            "caseInsensitive": true
+          }
+        }
+      ],
+      "sort-imports": [
+        "error",
+        {
+          "ignoreCase": true,
+          "ignoreDeclarationSort": true
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid"
+  }
+}
