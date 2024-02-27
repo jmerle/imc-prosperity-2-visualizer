@@ -29,7 +29,7 @@ export function SandboxLogDetail({
       <Grid.Col span={12}>
         {/* prettier-ignore */}
         <Title order={5}>
-          Timestamp {formatNumber(state.timestamp)} • Profit / Loss: {formatNumber(profitLoss)} • Conversions: {conversions}
+          Timestamp {formatNumber(state.timestamp)} • Profit / Loss: {formatNumber(profitLoss)} • Conversions: {formatNumber(conversions)}
         </Title>
       </Grid.Col>
       <Grid.Col span={{ xs: 12, sm: 4 }}>
