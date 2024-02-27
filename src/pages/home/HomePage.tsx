@@ -1,4 +1,4 @@
-import { Code, Container, Stack, Text } from '@mantine/core';
+import { Anchor, Code, Container, Stack, Text } from '@mantine/core';
 import { ReactNode } from 'react';
 import { ScrollableCodeHighlight } from '../../components/ScrollableCodeHighlight.tsx';
 import { HomeCard } from './HomeCard.tsx';
@@ -114,8 +114,9 @@ class Trader:
         <HomeCard title="Welcome!">
           {/* prettier-ignore */}
           <Text>
-            IMC Prosperity 2 Visualizer is a visualizer for <a href="https://prosperity.imc.com/" target="_blank" rel="noreferrer">IMC Prosperity 2</a> algorithms.
-            Its source code is available in the <a href="https://github.com/jmerle/imc-prosperity-2-visualizer" target="_blank" rel="noreferrer">jmerle/imc-prosperity-2-visualizer</a> GitHub repository.
+            IMC Prosperity 2 Visualizer is a visualizer for <Anchor href="https://prosperity.imc.com/" target="_blank" rel="noreferrer">IMC Prosperity 2</Anchor> algorithms.
+            Its source code is available in the <Anchor href="https://github.com/jmerle/imc-prosperity-2-visualizer" target="_blank" rel="noreferrer">jmerle/imc-prosperity-2-visualizer</Anchor> GitHub repository.
+            It is based on the <Anchor href="https://jmerle.github.io/imc-prosperity-visualizer/" target="_blank" rel="noreferrer">IMC Prosperity 1 visualizer</Anchor> by the same author.
             Load an algorithm below to get started.
           </Text>
         </HomeCard>
