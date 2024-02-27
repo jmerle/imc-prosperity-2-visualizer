@@ -223,8 +223,6 @@ export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Al
   const activityLogs = getActivityLogs(logLines);
   const sandboxLogs = getSandboxLogs(logLines);
 
-  console.log(activityLogs, sandboxLogs);
-
   if (activityLogs.length === 0 || sandboxLogs.length === 0) {
     throw new Error('Logs are in invalid format, please see the prerequisites section above.');
   }
