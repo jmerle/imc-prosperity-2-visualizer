@@ -5,7 +5,10 @@ import { useStore } from '../../store.ts';
 import { Chart } from './Chart.tsx';
 
 function getLimit(algorithm: Algorithm, symbol: ProsperitySymbol): number {
-  const knownLimits: Record<string, number> = {};
+  const knownLimits: Record<string, number> = {
+    AMETHYSTS: 20,
+    STARFRUIT: 20,
+  };
 
   if (knownLimits[symbol] !== undefined) {
     return knownLimits[symbol];
