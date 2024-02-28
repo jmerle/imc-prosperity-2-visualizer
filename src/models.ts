@@ -93,7 +93,8 @@ export interface SandboxLogRow {
   orders: Record<ProsperitySymbol, Order[]>;
   conversions: number;
   traderData: string;
-  logs: string;
+  algorithmLogs: string;
+  sandboxLogs: string;
 }
 
 export interface Algorithm {
@@ -148,5 +149,5 @@ export type CompressedSandboxLogRow = [
   orders: CompressedOrder[],
   conversions: number,
   traderData: string,
-  logs: string,
+  logs: string
 ];

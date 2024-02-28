@@ -16,7 +16,7 @@ export interface SandboxLogDetailProps {
 }
 
 export function SandboxLogDetail({
-  row: { state, orders, conversions, traderData, logs },
+  row: { state, orders, conversions, traderData, algorithmLogs, sandboxLogs },
 }: SandboxLogDetailProps): ReactNode {
   const algorithm = useStore(state => state.algorithm)!;
 
@@ -51,21 +51,33 @@ export function SandboxLogDetail({
         </Grid.Col>
       ))}
       {Object.keys(state.orderDepths).length % 3 > 0 && <Grid.Col span="auto" />}
-      <Grid.Col span={{ xs: 12, sm: 6 }}>
+      <Grid.Col span={{ xs: 12, sm: 4 }}>
         <Title order={5}>Own trades</Title>
         {<TradesTable trades={state.ownTrades} />}
       </Grid.Col>
-      <Grid.Col span={{ xs: 12, sm: 6 }}>
+      <Grid.Col span={{ xs: 12, sm: 4 }}>
         <Title order={5}>Market trades</Title>
         {<TradesTable trades={state.marketTrades} />}
       </Grid.Col>
-      <Grid.Col span={{ xs: 12, sm: 6 }}>
+      <Grid.Col span={{ xs: 12, sm: 4 }}>
         <Title order={5}>Orders</Title>
         {<OrdersTable orders={orders} />}
       </Grid.Col>
       <Grid.Col span={{ xs: 12, sm: 6 }}>
-        <Title order={5}>Logs</Title>
-        {logs ? <ScrollableCodeHighlight code={logs} language="markdown" /> : <Text>Timestamp has no logs</Text>}
+        <Title order={5}>Sandbox logs</Title>
+        {sandboxLogs ? (
+          <ScrollableCodeHighlight code={sandboxLogs} language="markdown" />
+        ) : (
+          <Text>Timestamp has no sandbox logs</Text>
+        )}
+      </Grid.Col>
+      <Grid.Col span={{ xs: 12, sm: 6 }}>
+        <Title order={5}>Algorithm logs</Title>
+        {algorithmLogs ? (
+          <ScrollableCodeHighlight code={algorithmLogs} language="markdown" />
+        ) : (
+          <Text>Timestamp has no algorithm logs</Text>
+        )}
       </Grid.Col>
       <Grid.Col span={{ xs: 12, sm: 6 }}>
         <Title order={5}>Previous trader data</Title>

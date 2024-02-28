@@ -172,13 +172,14 @@ function decompressOrders(compressed: CompressedOrder[]): Record<ProsperitySymbo
   return orders;
 }
 
-function decompressSandboxLogRow(compressed: CompressedSandboxLogRow): SandboxLogRow {
+function decompressSandboxLogRow(compressed: CompressedSandboxLogRow, sandboxLogs: string): SandboxLogRow {
   return {
     state: decompressState(compressed[0]),
     orders: decompressOrders(compressed[1]),
     conversions: compressed[2],
     traderData: compressed[3],
-    logs: compressed[4],
+    algorithmLogs: compressed[4],
+    sandboxLogs,
   };
 }
 
@@ -189,7 +190,10 @@ function getSandboxLogs(logLines: string[]): SandboxLogRow[] {
   }
 
   const rows: SandboxLogRow[] = [];
-  const requiredPrefix = '  "lambdaLog": ';
+  let nextSandboxLogs = '';
+
+  const sandboxLogPrefix = '  "sandboxLog": ';
+  const lambdaLogPrefix = '  "lambdaLog": ';
 
   for (let i = headerIndex + 1; i < logLines.length; i++) {
     const line = logLines[i];
@@ -197,16 +201,21 @@ function getSandboxLogs(logLines: string[]): SandboxLogRow[] {
       break;
     }
 
-    if (!line.startsWith(requiredPrefix) || line === '  "lambdaLog": "",') {
+    if (line.startsWith(sandboxLogPrefix)) {
+      nextSandboxLogs = JSON.parse(line.substring(sandboxLogPrefix.length, line.length - 1)).trim();
       continue;
     }
 
-    const start = requiredPrefix.length;
+    if (!line.startsWith(lambdaLogPrefix) || line === '  "lambdaLog": "",') {
+      continue;
+    }
+
+    const start = lambdaLogPrefix.length;
     const end = line.lastIndexOf(']') + 1;
 
     try {
       const compressedLogRow = JSON.parse(JSON.parse(line.substring(start, end) + '"'));
-      rows.push(decompressSandboxLogRow(compressedLogRow));
+      rows.push(decompressSandboxLogRow(compressedLogRow, nextSandboxLogs));
     } catch (err) {
       console.log(line);
       console.error(err);
