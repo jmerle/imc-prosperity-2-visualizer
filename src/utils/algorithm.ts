@@ -172,7 +172,7 @@ function decompressOrders(compressed: CompressedOrder[]): Record<ProsperitySymbo
   return orders;
 }
 
-function decompressSandboxLogRow(compressed: CompressedAlgorithmDataRow, sandboxLogs: string): AlgorithmDataRow {
+function decompressDataRow(compressed: CompressedAlgorithmDataRow, sandboxLogs: string): AlgorithmDataRow {
   return {
     state: decompressState(compressed[0]),
     orders: decompressOrders(compressed[1]),
@@ -183,7 +183,7 @@ function decompressSandboxLogRow(compressed: CompressedAlgorithmDataRow, sandbox
   };
 }
 
-function getSandboxLogs(logLines: string[]): AlgorithmDataRow[] {
+function getAlgorithmData(logLines: string[]): AlgorithmDataRow[] {
   const headerIndex = logLines.indexOf('Sandbox logs:');
   if (headerIndex === -1) {
     return [];
@@ -214,8 +214,8 @@ function getSandboxLogs(logLines: string[]): AlgorithmDataRow[] {
     const end = line.lastIndexOf(']') + 1;
 
     try {
-      const compressedLogRow = JSON.parse(JSON.parse(line.substring(start, end) + '"'));
-      rows.push(decompressSandboxLogRow(compressedLogRow, nextSandboxLogs));
+      const compressedDataRow = JSON.parse(JSON.parse(line.substring(start, end) + '"'));
+      rows.push(decompressDataRow(compressedDataRow, nextSandboxLogs));
     } catch (err) {
       console.log(line);
       console.error(err);
@@ -230,16 +230,16 @@ export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Al
   const logLines = logs.trim().split('\n');
 
   const activityLogs = getActivityLogs(logLines);
-  const sandboxLogs = getSandboxLogs(logLines);
+  const data = getAlgorithmData(logLines);
 
-  if (activityLogs.length === 0 || sandboxLogs.length === 0) {
+  if (activityLogs.length === 0 || data.length === 0) {
     throw new Error('Logs are in invalid format, please see the prerequisites section above.');
   }
 
   return {
     summary,
     activityLogs,
-    data: sandboxLogs,
+    data,
   };
 }
 
