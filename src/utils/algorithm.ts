@@ -1,12 +1,13 @@
 import {
   ActivityLogRow,
   Algorithm,
+  AlgorithmDataRow,
   AlgorithmSummary,
+  CompressedAlgorithmDataRow,
   CompressedListing,
   CompressedObservations,
   CompressedOrder,
   CompressedOrderDepth,
-  CompressedSandboxLogRow,
   CompressedTrade,
   CompressedTradingState,
   ConversionObservation,
@@ -16,7 +17,6 @@ import {
   OrderDepth,
   Product,
   ProsperitySymbol,
-  SandboxLogRow,
   Trade,
   TradingState,
 } from '../models.ts';
@@ -172,7 +172,7 @@ function decompressOrders(compressed: CompressedOrder[]): Record<ProsperitySymbo
   return orders;
 }
 
-function decompressSandboxLogRow(compressed: CompressedSandboxLogRow, sandboxLogs: string): SandboxLogRow {
+function decompressSandboxLogRow(compressed: CompressedAlgorithmDataRow, sandboxLogs: string): AlgorithmDataRow {
   return {
     state: decompressState(compressed[0]),
     orders: decompressOrders(compressed[1]),
@@ -183,13 +183,13 @@ function decompressSandboxLogRow(compressed: CompressedSandboxLogRow, sandboxLog
   };
 }
 
-function getSandboxLogs(logLines: string[]): SandboxLogRow[] {
+function getSandboxLogs(logLines: string[]): AlgorithmDataRow[] {
   const headerIndex = logLines.indexOf('Sandbox logs:');
   if (headerIndex === -1) {
     return [];
   }
 
-  const rows: SandboxLogRow[] = [];
+  const rows: AlgorithmDataRow[] = [];
   let nextSandboxLogs = '';
 
   const sandboxLogPrefix = '  "sandboxLog": ';
@@ -239,7 +239,7 @@ export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Al
   return {
     summary,
     activityLogs,
-    sandboxLogs,
+    data: sandboxLogs,
   };
 }
 

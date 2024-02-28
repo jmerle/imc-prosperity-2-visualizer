@@ -88,7 +88,7 @@ export interface TradingState {
   observations: Observation;
 }
 
-export interface SandboxLogRow {
+export interface AlgorithmDataRow {
   state: TradingState;
   orders: Record<ProsperitySymbol, Order[]>;
   conversions: number;
@@ -100,7 +100,7 @@ export interface SandboxLogRow {
 export interface Algorithm {
   summary?: AlgorithmSummary;
   activityLogs: ActivityLogRow[];
-  sandboxLogs: SandboxLogRow[];
+  data: AlgorithmDataRow[];
 }
 
 export type CompressedListing = [symbol: ProsperitySymbol, product: Product, denomination: Product];
@@ -144,7 +144,7 @@ export type CompressedTradingState = [
 
 export type CompressedOrder = [symbol: ProsperitySymbol, price: number, quantity: number];
 
-export type CompressedSandboxLogRow = [
+export type CompressedAlgorithmDataRow = [
   state: CompressedTradingState,
   orders: CompressedOrder[],
   conversions: number,

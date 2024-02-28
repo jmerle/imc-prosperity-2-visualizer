@@ -23,7 +23,7 @@ export function ProfitLossChart(): ReactNode {
     },
   ];
 
-  Object.keys(algorithm.sandboxLogs[0].state.listings)
+  Object.keys(algorithm.data[0].state.listings)
     .sort((a, b) => a.localeCompare(b))
     .forEach(symbol => {
       const data = [];

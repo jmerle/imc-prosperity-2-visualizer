@@ -1,23 +1,23 @@
 import { Slider, SliderProps, Text } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { ReactNode, useState } from 'react';
-import { SandboxLogRow } from '../../models.ts';
+import { AlgorithmDataRow } from '../../models.ts';
 import { useStore } from '../../store.ts';
 import { formatNumber } from '../../utils/format.ts';
-import { SandboxLogDetail } from './SandboxLogDetail.tsx';
+import { TimestampDetail } from './TimestampDetail.tsx';
 import { VisualizerCard } from './VisualizerCard.tsx';
 
-export function SandboxLogsCard(): ReactNode {
+export function TimestampsCard(): ReactNode {
   const algorithm = useStore(state => state.algorithm)!;
 
-  const rowsByTimestamp: Record<number, SandboxLogRow> = {};
-  for (const row of algorithm.sandboxLogs) {
+  const rowsByTimestamp: Record<number, AlgorithmDataRow> = {};
+  for (const row of algorithm.data) {
     rowsByTimestamp[row.state.timestamp] = row;
   }
 
-  const timestampMin = algorithm.sandboxLogs[0].state.timestamp;
-  const timestampMax = algorithm.sandboxLogs[algorithm.sandboxLogs.length - 1].state.timestamp;
-  const timestampStep = algorithm.sandboxLogs[1].state.timestamp - algorithm.sandboxLogs[0].state.timestamp;
+  const timestampMin = algorithm.data[0].state.timestamp;
+  const timestampMax = algorithm.data[algorithm.data.length - 1].state.timestamp;
+  const timestampStep = algorithm.data[1].state.timestamp - algorithm.data[0].state.timestamp;
 
   const [timestamp, setTimestamp] = useState(timestampMin);
 
@@ -35,7 +35,7 @@ export function SandboxLogsCard(): ReactNode {
   ]);
 
   return (
-    <VisualizerCard title="Sandbox logs">
+    <VisualizerCard title="Timestamps">
       <Slider
         min={timestampMin}
         max={timestampMax}
@@ -48,7 +48,7 @@ export function SandboxLogsCard(): ReactNode {
       />
 
       {rowsByTimestamp[timestamp] ? (
-        <SandboxLogDetail row={rowsByTimestamp[timestamp]} />
+        <TimestampDetail row={rowsByTimestamp[timestamp]} />
       ) : (
         <Text>No logs found for timestamp {formatNumber(timestamp)}</Text>
       )}

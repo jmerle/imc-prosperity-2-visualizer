@@ -1,7 +1,7 @@
 import { Grid, Text, Title } from '@mantine/core';
 import { ReactNode } from 'react';
 import { ScrollableCodeHighlight } from '../../components/ScrollableCodeHighlight.tsx';
-import { SandboxLogRow } from '../../models.ts';
+import { AlgorithmDataRow } from '../../models.ts';
 import { useStore } from '../../store.ts';
 import { formatNumber } from '../../utils/format.ts';
 import { ListingsTable } from './ListingsTable.tsx';
@@ -11,13 +11,13 @@ import { PositionTable } from './PositionTable.tsx';
 import { ProfitLossTable } from './ProfitLossTable.tsx';
 import { TradesTable } from './TradesTable.tsx';
 
-export interface SandboxLogDetailProps {
-  row: SandboxLogRow;
+export interface TimestampDetailProps {
+  row: AlgorithmDataRow;
 }
 
-export function SandboxLogDetail({
+export function TimestampDetail({
   row: { state, orders, conversions, traderData, algorithmLogs, sandboxLogs },
-}: SandboxLogDetailProps): ReactNode {
+}: TimestampDetailProps): ReactNode {
   const algorithm = useStore(state => state.algorithm)!;
 
   const profitLoss = algorithm.activityLogs

@@ -7,7 +7,7 @@ import { AlgorithmSummaryCard } from './AlgorithmSummaryCard.tsx';
 import { PositionChart } from './PositionChart.tsx';
 import { PriceChart } from './PriceChart.tsx';
 import { ProfitLossChart } from './ProfitLossChart.tsx';
-import { SandboxLogsCard } from './SandboxLogsCard.tsx';
+import { TimestampsCard } from './TimestampsCard.tsx';
 import { VisualizerCard } from './VisualizerCard.tsx';
 import { VolumeChart } from './VolumeChart.tsx';
 
@@ -27,7 +27,7 @@ export function VisualizerPage(): ReactNode {
   }
 
   const symbolColumns: ReactNode[] = [];
-  Object.keys(algorithm.sandboxLogs[0].state.listings)
+  Object.keys(algorithm.data[0].state.listings)
     .sort((a, b) => a.localeCompare(b))
     .forEach((symbol, i) => {
       symbolColumns.push(
@@ -61,7 +61,7 @@ export function VisualizerPage(): ReactNode {
         </Grid.Col>
         {symbolColumns}
         <Grid.Col span={12}>
-          <SandboxLogsCard />
+          <TimestampsCard />
         </Grid.Col>
         {algorithm.summary && (
           <Grid.Col span={12}>
