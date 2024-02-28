@@ -149,5 +149,5 @@ export type CompressedSandboxLogRow = [
   orders: CompressedOrder[],
   conversions: number,
   traderData: string,
-  logs: string
+  logs: string,
 ];
