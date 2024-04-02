@@ -3,13 +3,17 @@ import { ReactNode } from 'react';
 import { ScrollableCodeHighlight } from '../../components/ScrollableCodeHighlight.tsx';
 import { useAsync } from '../../hooks/use-async.ts';
 import { useStore } from '../../store.ts';
-import { downloadAlgorithmResults } from '../../utils/algorithm.ts';
+import { downloadAlgorithmLogs, downloadAlgorithmResults } from '../../utils/algorithm.ts';
 import { formatTimestamp } from '../../utils/format.ts';
 import { VisualizerCard } from './VisualizerCard.tsx';
 
 export function AlgorithmSummaryCard(): ReactNode {
   const algorithm = useStore(state => state.algorithm)!;
   const summary = algorithm.summary!;
+
+  const downloadLogs = useAsync<void>(async () => {
+    await downloadAlgorithmLogs(summary.id);
+  });
 
   const downloadResults = useAsync<void>(async () => {
     await downloadAlgorithmResults(summary.id);
@@ -58,14 +62,7 @@ export function AlgorithmSummaryCard(): ReactNode {
         </Grid.Col>
         <Grid.Col span={2}>
           <Group grow>
-            <Button
-              variant="outline"
-              component="a"
-              href={`https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/submission/logs/${summary.id}`}
-              download
-              target="_blank"
-              rel="noreferrer"
-            >
+            <Button variant="outline" onClick={downloadLogs.call} loading={downloadLogs.loading}>
               Download logs
             </Button>
             <Button variant="outline" onClick={downloadResults.call} loading={downloadResults.loading}>

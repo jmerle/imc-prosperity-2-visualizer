@@ -1,6 +1,6 @@
-import { Button, Code, Kbd, PasswordInput, Select, Text } from '@mantine/core';
+import { Anchor, Button, Code, Kbd, PasswordInput, Select, Text, TextInput } from '@mantine/core';
 import { AxiosResponse } from 'axios';
-import { FormEvent, ReactNode, useCallback } from 'react';
+import { FormEvent, ReactNode, useCallback, useState } from 'react';
 import { ErrorAlert } from '../../components/ErrorAlert.tsx';
 import { useAsync } from '../../hooks/use-async.ts';
 import { AlgorithmSummary } from '../../models.ts';
@@ -37,6 +37,8 @@ export function LoadFromProsperity(): ReactNode {
 
   const round = useStore(state => state.round);
   const setRound = useStore(state => state.setRound);
+
+  const [proxy, setProxy] = useState('https://imc-prosperity-2-visualizer-cors-anywhere.jmerle.dev/');
 
   const loadAlgorithms = useAsync<AlgorithmSummary[]>(async (): Promise<AlgorithmSummary[]> => {
     let response: AxiosResponse<AlgorithmSummary[]>;
@@ -108,6 +110,12 @@ export function LoadFromProsperity(): ReactNode {
         download algorithm logs and results. The visualizer communicates directly with the API used by the Prosperity
         website and never sends data to other servers.
       </Text>
+      {/* prettier-ignore */}
+      <Text>
+        By default the &quot;Open in visualizer&quot; button routes the HTTP request to download the algorithm&apos;s logs through a <Anchor href="https://github.com/Rob--W/cors-anywhere" target="_blank" rel="noreferrer">CORS Anywhere</Anchor> instance hosted by the creator of this visualizer.
+        This is necessary because the logs need to be downloaded from an AWS S3 endpoint without <Anchor href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin" target="_blank" rel="noreferrer">Access-Control-Allow-Origin</Anchor> headers that allow downloads from this visualizer.
+        While I promise no log data is persisted server-side, you are free to change the proxy to one hosted by yourself.
+      </Text>
 
       {loadAlgorithms.error && <ErrorAlert error={loadAlgorithms.error} />}
 
@@ -128,12 +136,20 @@ export function LoadFromProsperity(): ReactNode {
           mt="xs"
         />
 
+        <TextInput
+          label='"Open in visualizer" CORS Anywhere proxy'
+          placeholder="Proxy"
+          value={proxy}
+          onInput={e => setProxy((e.target as HTMLInputElement).value)}
+          mt="xs"
+        />
+
         <Button fullWidth type="submit" loading={loadAlgorithms.loading} mt="sm">
           <div>Load algorithms</div>
         </Button>
       </form>
 
-      {loadAlgorithms.success && <AlgorithmList algorithms={loadAlgorithms.result!} />}
+      {loadAlgorithms.success && <AlgorithmList algorithms={loadAlgorithms.result!} proxy={proxy} />}
     </HomeCard>
   );
 }

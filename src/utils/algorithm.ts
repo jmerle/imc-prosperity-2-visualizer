@@ -243,20 +243,35 @@ export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Al
   };
 }
 
-export async function downloadAlgorithmResults(algorithmId: string): Promise<void> {
-  const detailsResponse = await authenticatedAxios.get(
-    `https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/results/tutorial/${algorithmId}`,
+export async function getAlgorithmLogsUrl(algorithmId: string): Promise<string> {
+  const urlResponse = await authenticatedAxios.get(
+    `https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/submission/logs/${algorithmId}`,
   );
 
-  const resultsUrl = detailsResponse.data.algo.summary.activitiesLog;
+  return urlResponse.data;
+}
 
+function downloadFile(url: string): void {
   const link = document.createElement('a');
-  link.href = resultsUrl;
-  link.download = 'results.csv';
+  link.href = url;
+  link.download = new URL(url).pathname.split('/').pop()!;
   link.target = '_blank';
   link.rel = 'noreferrer';
 
   document.body.appendChild(link);
   link.click();
   link.remove();
+}
+
+export async function downloadAlgorithmLogs(algorithmId: string): Promise<void> {
+  const logsUrl = await getAlgorithmLogsUrl(algorithmId);
+  downloadFile(logsUrl);
+}
+
+export async function downloadAlgorithmResults(algorithmId: string): Promise<void> {
+  const detailsResponse = await authenticatedAxios.get(
+    `https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/results/tutorial/${algorithmId}`,
+  );
+
+  downloadFile(detailsResponse.data.algo.summary.activitiesLog);
 }

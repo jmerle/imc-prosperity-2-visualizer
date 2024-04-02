@@ -1,4 +1,5 @@
 import { Accordion, Button, Group, MantineColor, Text } from '@mantine/core';
+import axios from 'axios';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ErrorAlert } from '../../components/ErrorAlert';
@@ -7,16 +8,21 @@ import { useActualColorScheme } from '../../hooks/use-actual-color-scheme.ts';
 import { useAsync } from '../../hooks/use-async.ts';
 import { AlgorithmSummary } from '../../models.ts';
 import { useStore } from '../../store.ts';
-import { downloadAlgorithmResults, parseAlgorithmLogs } from '../../utils/algorithm.ts';
-import { authenticatedAxios } from '../../utils/axios.ts';
+import {
+  downloadAlgorithmLogs,
+  downloadAlgorithmResults,
+  getAlgorithmLogsUrl,
+  parseAlgorithmLogs,
+} from '../../utils/algorithm.ts';
 import { formatTimestamp } from '../../utils/format.ts';
 
 export interface AlgorithmDetailProps {
   position: number;
   algorithm: AlgorithmSummary;
+  proxy: string;
 }
 
-export function AlgorithmDetail({ position, algorithm }: AlgorithmDetailProps): ReactNode {
+export function AlgorithmDetail({ position, algorithm, proxy }: AlgorithmDetailProps): ReactNode {
   const setAlgorithm = useStore(state => state.setAlgorithm);
 
   const navigate = useNavigate();
@@ -32,14 +38,17 @@ export function AlgorithmDetail({ position, algorithm }: AlgorithmDetailProps): 
       break;
   }
 
+  const downloadLogs = useAsync<void>(async () => {
+    await downloadAlgorithmLogs(algorithm.id);
+  });
+
   const downloadResults = useAsync<void>(async () => {
     await downloadAlgorithmResults(algorithm.id);
   });
 
   const openInVisualizer = useAsync<void>(async () => {
-    const logsResponse = await authenticatedAxios.get(
-      `https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/submission/logs/${algorithm.id}`,
-    );
+    const logsUrl = await getAlgorithmLogsUrl(algorithm.id);
+    const logsResponse = await axios.get(proxy + logsUrl);
 
     setAlgorithm(parseAlgorithmLogs(logsResponse.data, algorithm));
     navigate('/visualizer');
@@ -60,14 +69,7 @@ export function AlgorithmDetail({ position, algorithm }: AlgorithmDetailProps): 
       <Accordion.Panel>
         {openInVisualizer.error && <ErrorAlert error={openInVisualizer.error} mb="xs" />}
         <Group grow mb="xs">
-          <Button
-            variant="outline"
-            component="a"
-            href={`https://bz97lt8b1e.execute-api.eu-west-1.amazonaws.com/prod/submission/logs/${algorithm.id}`}
-            download
-            target="_blank"
-            rel="noreferrer"
-          >
+          <Button variant="outline" onClick={downloadLogs.call} loading={downloadLogs.loading}>
             Download logs
           </Button>
           <Button variant="outline" onClick={downloadResults.call} loading={downloadResults.loading}>

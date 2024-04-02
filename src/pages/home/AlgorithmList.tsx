@@ -5,9 +5,10 @@ import { AlgorithmDetail } from './AlgorithmDetail.tsx';
 
 export interface AlgorithmListProps {
   algorithms: AlgorithmSummary[];
+  proxy: string;
 }
 
-export function AlgorithmList({ algorithms }: AlgorithmListProps): ReactNode {
+export function AlgorithmList({ algorithms, proxy }: AlgorithmListProps): ReactNode {
   if (algorithms.length === 0) {
     return <Text mt="md">No algorithms found</Text>;
   }
@@ -15,7 +16,7 @@ export function AlgorithmList({ algorithms }: AlgorithmListProps): ReactNode {
   return (
     <Accordion variant="contained" defaultValue={algorithms[0].id} mt="md">
       {algorithms.map((algorithm, i) => (
-        <AlgorithmDetail key={i} position={algorithms.length - i} algorithm={algorithm} />
+        <AlgorithmDetail key={i} position={algorithms.length - i} algorithm={algorithm} proxy={proxy} />
       ))}
     </Accordion>
   );
