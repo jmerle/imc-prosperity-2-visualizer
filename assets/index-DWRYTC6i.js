@@ -151,25 +151,37 @@ from typing import Any
 class Logger:
     def __init__(self) -> None:
         self.logs = ""
+        self.max_log_length = 3750
 
     def print(self, *objects: Any, sep: str = " ", end: str = "\\n") -> None:
         self.logs += sep.join(map(str, objects)) + end
 
     def flush(self, state: TradingState, orders: dict[Symbol, list[Order]], conversions: int, trader_data: str) -> None:
-        print(json.dumps([
-            self.compress_state(state),
+        base_length = len(self.to_json([
+            self.compress_state(state, ""),
             self.compress_orders(orders),
             conversions,
-            trader_data,
-            self.logs,
-        ], cls=ProsperityEncoder, separators=(",", ":")))
+            "",
+            "",
+        ]))
+
+        # We truncate state.traderData, trader_data, and self.logs to the same max. length to fit the log limit
+        max_item_length = (self.max_log_length - base_length) // 3
+
+        print(self.to_json([
+            self.compress_state(state, self.truncate(state.traderData, max_item_length)),
+            self.compress_orders(orders),
+            conversions,
+            self.truncate(trader_data, max_item_length),
+            self.truncate(self.logs, max_item_length),
+        ]))
 
         self.logs = ""
 
-    def compress_state(self, state: TradingState) -> list[Any]:
+    def compress_state(self, state: TradingState, trader_data: str) -> list[Any]:
         return [
             state.timestamp,
-            state.traderData,
+            trader_data,
             self.compress_listings(state.listings),
             self.compress_order_depths(state.order_depths),
             self.compress_trades(state.own_trades),
@@ -229,6 +241,15 @@ class Logger:
                 compressed.append([order.symbol, order.price, order.quantity])
 
         return compressed
+
+    def to_json(self, value: Any) -> str:
+        return json.dumps(value, cls=ProsperityEncoder, separators=(",", ":"))
+
+    def truncate(self, value: str, max_length: int) -> str:
+        if len(value) <= max_length:
+            return value
+
+        return value[:max_length - 3] + "..."
 
 logger = Logger()
 
