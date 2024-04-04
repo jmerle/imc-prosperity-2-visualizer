@@ -210,11 +210,11 @@ function getAlgorithmData(logLines: string[]): AlgorithmDataRow[] {
       continue;
     }
 
-    const start = lambdaLogPrefix.length;
+    const start = line.indexOf('[[');
     const end = line.lastIndexOf(']') + 1;
 
     try {
-      const compressedDataRow = JSON.parse(JSON.parse(line.substring(start, end) + '"'));
+      const compressedDataRow = JSON.parse(JSON.parse('"' + line.substring(start, end) + '"'));
       rows.push(decompressDataRow(compressedDataRow, nextSandboxLogs));
     } catch (err) {
       console.log(line);
