@@ -227,7 +227,7 @@ function getAlgorithmData(logLines: string[]): AlgorithmDataRow[] {
 }
 
 export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Algorithm {
-  const logLines = logs.trim().split('\n');
+  const logLines = logs.trim().split(/\r?\n/);
 
   const activityLogs = getActivityLogs(logLines);
   const data = getAlgorithmData(logLines);
