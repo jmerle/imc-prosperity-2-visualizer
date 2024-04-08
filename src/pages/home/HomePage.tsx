@@ -119,14 +119,14 @@ logger = Logger()
 
 class Trader:
     def run(self, state: TradingState) -> tuple[dict[Symbol, list[Order]], int, str]:
-        orders = {}
+        result = {}
         conversions = 0
         trader_data = ""
 
         # TODO: Add logic
 
-        logger.flush(state, orders, conversions, trader_data)
-        return orders, conversions, trader_data
+        logger.flush(state, result, conversions, trader_data)
+        return result, conversions, trader_data
   `.trim();
 
   return (
