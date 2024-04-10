@@ -4,9 +4,11 @@ import { ScrollableCodeHighlight } from '../../components/ScrollableCodeHighligh
 import { AlgorithmDataRow } from '../../models.ts';
 import { useStore } from '../../store.ts';
 import { formatNumber } from '../../utils/format.ts';
+import { ConversionObservationsTable } from './ConversionObservationsTable.tsx';
 import { ListingsTable } from './ListingsTable.tsx';
 import { OrderDepthTable } from './OrderDepthTable.tsx';
 import { OrdersTable } from './OrdersTable.tsx';
+import { PlainValueObservationsTable } from './PlainValueObservationsTable.tsx';
 import { PositionTable } from './PositionTable.tsx';
 import { ProfitLossTable } from './ProfitLossTable.tsx';
 import { TradesTable } from './TradesTable.tsx';
@@ -62,6 +64,14 @@ export function TimestampDetail({
       <Grid.Col span={{ xs: 12, sm: 4 }}>
         <Title order={5}>Orders</Title>
         {<OrdersTable orders={orders} />}
+      </Grid.Col>
+      <Grid.Col span={{ xs: 12, sm: 4 }}>
+        <Title order={5}>Plain value observations</Title>
+        <PlainValueObservationsTable plainValueObservations={state.observations.plainValueObservations} />
+      </Grid.Col>
+      <Grid.Col span={{ xs: 12, sm: 8 }}>
+        <Title order={5}>Conversion observations</Title>
+        <ConversionObservationsTable conversionObservations={state.observations.conversionObservations} />
       </Grid.Col>
       <Grid.Col span={{ xs: 12, sm: 6 }}>
         <Title order={5}>Sandbox logs</Title>
