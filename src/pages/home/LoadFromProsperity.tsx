@@ -72,10 +72,10 @@ export function LoadFromProsperity(): ReactNode {
   const rounds = [
     { value: 'ROUND0', label: 'Tutorial', openFrom: '2024-02-12T09:00:00.000Z' },
     { value: 'ROUND1', label: 'Round 1', openFrom: '2024-04-08T09:00:00.000Z' },
-    { value: 'ROUND2', label: 'Round 2', openFrom: '2024-04-11T09:00:00.000Z' },
-    { value: 'ROUND3', label: 'Round 3', openFrom: '2024-04-14T09:00:00.000Z' },
-    { value: 'ROUND4', label: 'Round 4', openFrom: '2024-04-17T09:00:00.000Z' },
-    { value: 'ROUND5', label: 'Round 5', openFrom: '2024-04-20T09:00:00.000Z' },
+    { value: 'ROUND2', label: 'Round 2', openFrom: '2024-04-12T09:00:00.000Z' },
+    { value: 'ROUND3', label: 'Round 3', openFrom: '2024-04-15T09:00:00.000Z' },
+    { value: 'ROUND4', label: 'Round 4', openFrom: '2024-04-18T09:00:00.000Z' },
+    { value: 'ROUND5', label: 'Round 5', openFrom: '2024-04-21T09:00:00.000Z' },
   ].map(round => {
     const disabled = Date.parse(round.openFrom) > now;
     const label = disabled ? `${round.label} - Available from ${formatTimestamp(round.openFrom)}` : round.label;
