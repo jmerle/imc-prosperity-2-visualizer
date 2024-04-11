@@ -14,7 +14,7 @@ import {
   getAlgorithmLogsUrl,
   parseAlgorithmLogs,
 } from '../../utils/algorithm.ts';
-import { formatTimestamp } from '../../utils/format.ts';
+import { formatNumber, formatTimestamp } from '../../utils/format.ts';
 
 export interface AlgorithmDetailProps {
   position: number;
@@ -54,9 +54,20 @@ export function AlgorithmDetail({ position, algorithm, proxy }: AlgorithmDetailP
     navigate('/visualizer');
   });
 
-  let title = `${algorithm.fileName} submitted at ${formatTimestamp(algorithm.timestamp)} (${algorithm.status})`;
+  let title = `${algorithm.fileName} • ${formatTimestamp(algorithm.timestamp)}`;
+
+  let profitLoss = 0;
+  if (algorithm.status === 'FINISHED') {
+    const graphLogLines = algorithm.graphLog.trim().split('\n');
+    profitLoss = parseFloat(graphLogLines[graphLogLines.length - 1].split(';')[1]);
+
+    title += ` • FINISHED • PnL ≈ ${formatNumber(profitLoss)}`;
+  } else {
+    title += ` • ${algorithm.status}`;
+  }
+
   if (algorithm.selectedForRound) {
-    title += ' (active)';
+    title += ' • Active';
   }
 
   return (
@@ -102,6 +113,11 @@ export function AlgorithmDetail({ position, algorithm, proxy }: AlgorithmDetailP
         <Text>
           <b>Selected for round:</b> {algorithm.selectedForRound ? 'Yes' : 'No'}
         </Text>
+        {algorithm.status === 'FINISHED' && (
+          <Text>
+            <b>Approximate profit / loss: </b> {formatNumber(profitLoss)}
+          </Text>
+        )}
         <Text>
           <b>Content:</b>
         </Text>
