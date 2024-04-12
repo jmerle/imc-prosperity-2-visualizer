@@ -41,15 +41,16 @@ function getThemeOptions(theme: (highcharts: typeof Highcharts) => void): Highch
 
 interface ChartProps {
   title: string;
+  options?: Highcharts.Options;
   series: Highcharts.SeriesOptionsType[];
   min?: number;
   max?: number;
 }
 
-export function Chart({ title, series, min, max }: ChartProps): ReactNode {
+export function Chart({ title, options, series, min, max }: ChartProps): ReactNode {
   const colorScheme = useActualColorScheme();
 
-  const options = useMemo((): Highcharts.Options => {
+  const fullOptions = useMemo((): Highcharts.Options => {
     const themeOptions = colorScheme === 'light' ? {} : getThemeOptions(HighchartsHighContrastDarkTheme);
 
     const chartOptions: Highcharts.Options = {
@@ -148,14 +149,15 @@ export function Chart({ title, series, min, max }: ChartProps): ReactNode {
         enabled: false,
       },
       series,
+      ...options,
     };
 
     return merge(themeOptions, chartOptions);
-  }, [colorScheme, title, series, min, max]);
+  }, [colorScheme, title, options, series, min, max]);
 
   return (
     <VisualizerCard p={0}>
-      <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={options} immutable />
+      <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={fullOptions} immutable />
     </VisualizerCard>
   );
 }

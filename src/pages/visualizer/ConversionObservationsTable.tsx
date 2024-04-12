@@ -14,13 +14,13 @@ export function ConversionObservationsTable({ conversionObservations }: Conversi
     rows.push(
       <Table.Tr key={product}>
         <Table.Td>{product}</Table.Td>
-        <Table.Td>{formatNumber(observation.bidPrice)}</Table.Td>
-        <Table.Td>{formatNumber(observation.askPrice)}</Table.Td>
-        <Table.Td>{formatNumber(observation.transportFees)}</Table.Td>
-        <Table.Td>{formatNumber(observation.exportTariff)}</Table.Td>
-        <Table.Td>{formatNumber(observation.importTariff)}</Table.Td>
-        <Table.Td>{formatNumber(observation.sunlight)}</Table.Td>
-        <Table.Td>{formatNumber(observation.humidity)}</Table.Td>
+        <Table.Td>{formatNumber(observation.bidPrice, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.askPrice, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.transportFees, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.exportTariff, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.importTariff, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.sunlight, 2)}</Table.Td>
+        <Table.Td>{formatNumber(observation.humidity, 2)}</Table.Td>
       </Table.Tr>,
     );
   }

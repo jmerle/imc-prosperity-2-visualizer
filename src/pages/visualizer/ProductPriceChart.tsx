@@ -5,11 +5,11 @@ import { useStore } from '../../store.ts';
 import { getAskColor, getBidColor } from '../../utils/colors.ts';
 import { Chart } from './Chart.tsx';
 
-export interface PriceChartProps {
+export interface ProductPriceChartProps {
   symbol: ProsperitySymbol;
 }
 
-export function PriceChart({ symbol }: PriceChartProps): ReactNode {
+export function ProductPriceChart({ symbol }: ProductPriceChartProps): ReactNode {
   const algorithm = useStore(state => state.algorithm)!;
 
   const series: Highcharts.SeriesOptionsType[] = [

@@ -8,6 +8,7 @@ function getLimit(algorithm: Algorithm, symbol: ProsperitySymbol): number {
   const knownLimits: Record<string, number> = {
     AMETHYSTS: 20,
     STARFRUIT: 20,
+    ORCHIDS: 100,
   };
 
   if (knownLimits[symbol] !== undefined) {
