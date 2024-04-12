@@ -4,6 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useStore } from '../../store.ts';
 import { formatNumber } from '../../utils/format.ts';
 import { AlgorithmSummaryCard } from './AlgorithmSummaryCard.tsx';
+import { ConversionPriceChart } from './ConversionPriceChart.tsx';
 import { EnvironmentChart } from './EnvironmentChart.tsx';
 import { PositionChart } from './PositionChart.tsx';
 import { ProductPriceChart } from './ProductPriceChart.tsx';
@@ -12,7 +13,6 @@ import { TimestampsCard } from './TimestampsCard.tsx';
 import { TransportChart } from './TransportChart.tsx';
 import { VisualizerCard } from './VisualizerCard.tsx';
 import { VolumeChart } from './VolumeChart.tsx';
-import { ConversionPriceChart } from './ConversionPriceChart.tsx';
 
 export function VisualizerPage(): ReactNode {
   const algorithm = useStore(state => state.algorithm);
