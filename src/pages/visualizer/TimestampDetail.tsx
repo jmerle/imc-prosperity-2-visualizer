@@ -52,7 +52,8 @@ export function TimestampDetail({
           <OrderDepthTable orderDepth={orderDepth} />
         </Grid.Col>
       ))}
-      {Object.keys(state.orderDepths).length % 3 > 0 && <Grid.Col span="auto" />}
+      {Object.keys(state.orderDepths).length % 3 <= 2 && <Grid.Col span={{ xs: 12, sm: 4 }} />}
+      {Object.keys(state.orderDepths).length % 3 <= 1 && <Grid.Col span={{ xs: 12, sm: 4 }} />}
       <Grid.Col span={{ xs: 12, sm: 4 }}>
         <Title order={5}>Own trades</Title>
         {<TradesTable trades={state.ownTrades} />}

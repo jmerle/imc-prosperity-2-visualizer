@@ -9,6 +9,10 @@ function getLimit(algorithm: Algorithm, symbol: ProsperitySymbol): number {
     AMETHYSTS: 20,
     STARFRUIT: 20,
     ORCHIDS: 100,
+    CHOCOLATE: 250,
+    STRAWBERRIES: 350,
+    ROSES: 60,
+    GIFT_BASKET: 60,
   };
 
   if (knownLimits[symbol] !== undefined) {
