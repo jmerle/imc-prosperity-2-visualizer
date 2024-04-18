@@ -1,3 +1,5 @@
+import { Code, Text } from '@mantine/core';
+import { ReactNode } from 'react';
 import {
   ActivityLogRow,
   Algorithm,
@@ -21,6 +23,12 @@ import {
   TradingState,
 } from '../models.ts';
 import { authenticatedAxios } from './axios.ts';
+
+export class AlgorithmParseError extends Error {
+  public constructor(public readonly node: ReactNode) {
+    super('Failed to parse algorithm logs');
+  }
+}
 
 function getColumnValues(columns: string[], indices: number[]): number[] {
   const values: number[] = [];
@@ -219,7 +227,14 @@ function getAlgorithmData(logLines: string[]): AlgorithmDataRow[] {
     } catch (err) {
       console.log(line);
       console.error(err);
-      throw new Error('Sandbox logs are in invalid format, please see the prerequisites section above.');
+
+      throw new AlgorithmParseError(
+        /* prettier-ignore */
+        <>
+          <Text size="sm">Logs are in invalid format, please see the prerequisites section above. Could not parse the following line:</Text>
+          <Text size="sm">{line}</Text>
+        </>,
+      );
     }
   }
 
@@ -232,8 +247,17 @@ export function parseAlgorithmLogs(logs: string, summary?: AlgorithmSummary): Al
   const activityLogs = getActivityLogs(logLines);
   const data = getAlgorithmData(logLines);
 
+  if (activityLogs.length === 0 && data.length === 0) {
+    throw new AlgorithmParseError(
+      "Logs are empty, either something went wrong during with your submission or your backtester logs in a different format than Prosperity's submission environment.",
+    );
+  }
+
   if (activityLogs.length === 0 || data.length === 0) {
-    throw new Error('Logs are in invalid format, please see the prerequisites section above.');
+    throw new AlgorithmParseError(
+      /* prettier-ignore */
+      <Text size="sm">Logs are in invalid format, please see the prerequisites section above. You are likely missing a <Code>logger.flush()</Code> call at the end of <Code>Trader.run()</Code>.</Text>,
+    );
   }
 
   return {

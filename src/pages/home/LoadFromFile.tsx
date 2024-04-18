@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ErrorAlert } from '../../components/ErrorAlert.tsx';
 import { useAsync } from '../../hooks/use-async.ts';
 import { useStore } from '../../store.ts';
-import { parseAlgorithmLogs } from '../../utils/algorithm.ts';
+import { parseAlgorithmLogs } from '../../utils/algorithm.tsx';
 import { HomeCard } from './HomeCard.tsx';
 
 function DropzoneContent(): ReactNode {

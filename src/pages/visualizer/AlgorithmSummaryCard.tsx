@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { ScrollableCodeHighlight } from '../../components/ScrollableCodeHighlight.tsx';
 import { useAsync } from '../../hooks/use-async.ts';
 import { useStore } from '../../store.ts';
-import { downloadAlgorithmLogs, downloadAlgorithmResults } from '../../utils/algorithm.ts';
+import { downloadAlgorithmLogs, downloadAlgorithmResults } from '../../utils/algorithm.tsx';
 import { formatTimestamp } from '../../utils/format.ts';
 import { VisualizerCard } from './VisualizerCard.tsx';
 

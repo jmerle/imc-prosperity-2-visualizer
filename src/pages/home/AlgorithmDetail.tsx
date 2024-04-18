@@ -13,7 +13,7 @@ import {
   downloadAlgorithmResults,
   getAlgorithmLogsUrl,
   parseAlgorithmLogs,
-} from '../../utils/algorithm.ts';
+} from '../../utils/algorithm.tsx';
 import { formatNumber, formatTimestamp } from '../../utils/format.ts';
 
 export interface AlgorithmDetailProps {
