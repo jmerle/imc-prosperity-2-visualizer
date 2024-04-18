@@ -53,10 +53,14 @@ export function PositionChart(): ReactNode {
     }
   }
 
-  const series: Highcharts.SeriesOptionsType[] = symbols.map(symbol => ({
+  const series: Highcharts.SeriesOptionsType[] = symbols.map((symbol, i) => ({
     type: 'line',
     name: symbol,
     data: data[symbol],
+
+    // We offset the position color by 1 to make it line up with the colors in the profit / loss chart,
+    // while keeping the "Total" line in the profit / loss chart the same color at all times
+    colorIndex: i + 1,
   }));
 
   return <Chart title="Positions (% of limit)" series={series} min={-100} max={100} />;
