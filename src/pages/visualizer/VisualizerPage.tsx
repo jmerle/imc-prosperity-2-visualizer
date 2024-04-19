@@ -6,6 +6,7 @@ import { formatNumber } from '../../utils/format.ts';
 import { AlgorithmSummaryCard } from './AlgorithmSummaryCard.tsx';
 import { ConversionPriceChart } from './ConversionPriceChart.tsx';
 import { EnvironmentChart } from './EnvironmentChart.tsx';
+import { PlainValueObservationChart } from './PlainValueObservationChart.tsx';
 import { PositionChart } from './PositionChart.tsx';
 import { ProductPriceChart } from './ProductPriceChart.tsx';
 import { ProfitLossChart } from './ProfitLossChart.tsx';
@@ -75,6 +76,16 @@ export function VisualizerPage(): ReactNode {
       );
 
       symbolColumns.push(<Grid.Col key={`${symbol} - environment`} span={{ xs: 12, sm: 6 }} />);
+    });
+
+  Object.keys(algorithm.data[0].state.observations.plainValueObservations)
+    .sort((a, b) => a.localeCompare(b))
+    .forEach(symbol => {
+      symbolColumns.push(
+        <Grid.Col key={`${symbol} - plain value observation`} span={{ xs: 12, sm: 6 }}>
+          <PlainValueObservationChart symbol={symbol} />
+        </Grid.Col>,
+      );
     });
 
   return (
