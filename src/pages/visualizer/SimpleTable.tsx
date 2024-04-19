@@ -13,15 +13,17 @@ export function SimpleTable({ label, columns, rows }: SimpleTableProps): ReactNo
   }
 
   return (
-    <Table withColumnBorders horizontalSpacing={8} verticalSpacing={4}>
-      <Table.Thead>
-        <Table.Tr>
-          {columns.map((column, i) => (
-            <Table.Th key={i}>{column}</Table.Th>
-          ))}
-        </Table.Tr>
-      </Table.Thead>
-      <Table.Tbody>{rows}</Table.Tbody>
-    </Table>
+    <Table.ScrollContainer minWidth={300}>
+      <Table withColumnBorders horizontalSpacing={8} verticalSpacing={4}>
+        <Table.Thead>
+          <Table.Tr>
+            {columns.map((column, i) => (
+              <Table.Th key={i}>{column}</Table.Th>
+            ))}
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>{rows}</Table.Tbody>
+      </Table>
+    </Table.ScrollContainer>
   );
 }
