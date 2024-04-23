@@ -37,56 +37,70 @@ export function VisualizerPage(): ReactNode {
     profitLoss += algorithm.activityLogs[i].profitLoss;
   }
 
+  const symbols = new Set<string>();
+  const plainValueObservationSymbols = new Set<string>();
+
+  for (let i = 0; i < algorithm.data.length; i += 1000) {
+    const row = algorithm.data[i];
+
+    for (const key of Object.keys(row.state.listings)) {
+      symbols.add(key);
+    }
+
+    for (const key of Object.keys(row.state.observations.plainValueObservations)) {
+      plainValueObservationSymbols.add(key);
+    }
+  }
+
+  const sortedSymbols = [...symbols].sort((a, b) => a.localeCompare(b));
+  const sortedPlainValueObservationSymbols = [...plainValueObservationSymbols].sort((a, b) => a.localeCompare(b));
+
   const symbolColumns: ReactNode[] = [];
-  Object.keys(algorithm.data[0].state.listings)
-    .sort((a, b) => a.localeCompare(b))
-    .forEach(symbol => {
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - product price`} span={{ xs: 12, sm: 6 }}>
-          <ProductPriceChart symbol={symbol} />
-        </Grid.Col>,
-      );
+  sortedSymbols.forEach(symbol => {
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - product price`} span={{ xs: 12, sm: 6 }}>
+        <ProductPriceChart symbol={symbol} />
+      </Grid.Col>,
+    );
 
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - symbol`} span={{ xs: 12, sm: 6 }}>
-          <VolumeChart symbol={symbol} />
-        </Grid.Col>,
-      );
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - symbol`} span={{ xs: 12, sm: 6 }}>
+        <VolumeChart symbol={symbol} />
+      </Grid.Col>,
+    );
 
-      if (!conversionProducts.has(symbol)) {
-        return;
-      }
+    if (!conversionProducts.has(symbol)) {
+      return;
+    }
 
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - conversion price`} span={{ xs: 12, sm: 6 }}>
-          <ConversionPriceChart symbol={symbol} />
-        </Grid.Col>,
-      );
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - conversion price`} span={{ xs: 12, sm: 6 }}>
+        <ConversionPriceChart symbol={symbol} />
+      </Grid.Col>,
+    );
 
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - transport`} span={{ xs: 12, sm: 6 }}>
-          <TransportChart symbol={symbol} />
-        </Grid.Col>,
-      );
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - transport`} span={{ xs: 12, sm: 6 }}>
+        <TransportChart symbol={symbol} />
+      </Grid.Col>,
+    );
 
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - environment`} span={{ xs: 12, sm: 6 }}>
-          <EnvironmentChart symbol={symbol} />
-        </Grid.Col>,
-      );
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - environment`} span={{ xs: 12, sm: 6 }}>
+        <EnvironmentChart symbol={symbol} />
+      </Grid.Col>,
+    );
 
-      symbolColumns.push(<Grid.Col key={`${symbol} - environment`} span={{ xs: 12, sm: 6 }} />);
-    });
+    symbolColumns.push(<Grid.Col key={`${symbol} - environment`} span={{ xs: 12, sm: 6 }} />);
+  });
 
-  Object.keys(algorithm.data[0].state.observations.plainValueObservations)
-    .sort((a, b) => a.localeCompare(b))
-    .forEach(symbol => {
-      symbolColumns.push(
-        <Grid.Col key={`${symbol} - plain value observation`} span={{ xs: 12, sm: 6 }}>
-          <PlainValueObservationChart symbol={symbol} />
-        </Grid.Col>,
-      );
-    });
+  sortedPlainValueObservationSymbols.forEach(symbol => {
+    symbolColumns.push(
+      <Grid.Col key={`${symbol} - plain value observation`} span={{ xs: 12, sm: 6 }}>
+        <PlainValueObservationChart symbol={symbol} />
+      </Grid.Col>,
+    );
+  });
 
   return (
     <Container fluid>
@@ -99,10 +113,10 @@ export function VisualizerPage(): ReactNode {
           </VisualizerCard>
         </Grid.Col>
         <Grid.Col span={{ xs: 12, sm: 6 }}>
-          <ProfitLossChart />
+          <ProfitLossChart symbols={sortedSymbols} />
         </Grid.Col>
         <Grid.Col span={{ xs: 12, sm: 6 }}>
-          <PositionChart />
+          <PositionChart symbols={sortedSymbols} />
         </Grid.Col>
         {symbolColumns}
         <Grid.Col span={12}>

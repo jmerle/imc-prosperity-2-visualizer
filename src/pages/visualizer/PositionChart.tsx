@@ -22,19 +22,19 @@ function getLimit(algorithm: Algorithm, symbol: ProsperitySymbol): number {
   // This code will be hit when a new product is added to the competition and the visualizer isn't updated yet
   // In that case the visualizer doesn't know the real limit yet, so we make a guess based on the algorithm's positions
 
-  const product = algorithm.data[0].state.listings[symbol].product;
-
-  const positions = algorithm.data.map(row => row.state.position[product] || 0);
+  const positions = algorithm.data.map(row => row.state.position[symbol] || 0);
   const minPosition = Math.min(...positions);
   const maxPosition = Math.max(...positions);
 
   return Math.max(Math.abs(minPosition), maxPosition);
 }
 
-export function PositionChart(): ReactNode {
-  const algorithm = useStore(state => state.algorithm)!;
+export interface PositionChartProps {
+  symbols: string[];
+}
 
-  const symbols = Object.keys(algorithm.data[0].state.listings).sort((a, b) => a.localeCompare(b));
+export function PositionChart({ symbols }: PositionChartProps): ReactNode {
+  const algorithm = useStore(state => state.algorithm)!;
 
   const limits: Record<string, number> = {};
   for (const symbol of symbols) {
